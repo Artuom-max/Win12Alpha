@@ -88,28 +88,6 @@
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
 
-        .bg-animated-matrix {
-            background: #000;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .matrix-column {
-            position: absolute;
-            top: -100%;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
-            animation: matrix 10s linear infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes matrix {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(200vh); }
-        }
-
         /* Video background */
         .bg-video {
             position: absolute;
@@ -638,7 +616,7 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 55px;
+            bottom: 60px;
         }
 
         .desktop-icon {
@@ -673,18 +651,6 @@
             line-height: 1.2;
         }
 
-        .desktop-icon input {
-            width: 100%;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid #0078d4;
-            border-radius: 3px;
-            text-align: center;
-            font-size: 11px;
-            padding: 3px;
-            color: #fff;
-            outline: none;
-        }
-
         #selection-box {
             position: absolute;
             border: 1px solid #0078d4;
@@ -697,25 +663,25 @@
         /* ============ TASKBAR ============ */
         .taskbar {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
             height: 52px;
             background: rgba(30, 30, 30, 0.85);
             backdrop-filter: blur(30px);
             display: flex;
             justify-content: center;
             align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
             z-index: 100;
+            padding: 0 8px;
+            gap: 4px;
         }
 
         .taskbar-center {
             display: flex;
             gap: 4px;
-            background: rgba(255,255,255,0.05);
             padding: 4px;
-            border-radius: 10px;
         }
 
         .taskbar-item {
@@ -741,17 +707,27 @@
             border-radius: 2px;
         }
 
-        .taskbar-item svg { width: 22px; height: 22px; fill: #fff; }
-
-        .taskbar-left, .taskbar-right {
+        .taskbar-item.pinned::before {
+            content: '';
             position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            bottom: 2px;
+            width: 6px;
+            height: 3px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 2px;
         }
 
-        .taskbar-left { left: 12px; }
-        .taskbar-right { right: 12px; }
+        .taskbar-item.active.pinned::before { display: none; }
+
+        .taskbar-item svg { width: 22px; height: 22px; fill: #fff; }
+        .taskbar-item .icon-emoji { font-size: 20px; }
+
+        .taskbar-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            margin: 0 4px;
+        }
 
         .weather-widget {
             color: #fff;
@@ -760,8 +736,6 @@
             border-radius: 6px;
             cursor: pointer;
         }
-
-        .weather-widget:hover { background: rgba(255,255,255,0.1); }
 
         .system-tray {
             display: flex;
@@ -778,8 +752,8 @@
         .clock {
             color: #fff;
             font-size: 12px;
-            text-align: right;
-            padding: 6px 10px;
+            text-align: center;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
         }
@@ -788,10 +762,103 @@
         .clock-time { font-weight: 500; }
         .clock-date { font-size: 10px; opacity: 0.7; }
 
+        /* ============ CALENDAR ============ */
+        #calendar-popup {
+            position: absolute;
+            bottom: 70px;
+            right: 10px;
+            width: 320px;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(40px);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 250;
+            padding: 16px;
+        }
+
+        #calendar-popup.show { display: block; animation: menuOpen 0.2s ease; }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .calendar-header h3 { font-size: 16px; font-weight: 400; }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            width: 28px;
+            height: 28px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .calendar-nav button:hover { background: rgba(255,255,255,0.2); }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover { background: rgba(255,255,255,0.1); }
+        .calendar-day.other-month { color: rgba(255,255,255,0.3); }
+        .calendar-day.today { background: #0078d4; }
+
+        .calendar-time {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .calendar-time .big-time {
+            font-size: 48px;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .calendar-time .big-date {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
         /* ============ START MENU ============ */
         #start-menu {
             position: absolute;
-            bottom: 60px;
+            bottom: 70px;
             left: 50%;
             transform: translateX(-50%) scale(0.95);
             width: 600px;
@@ -878,6 +945,7 @@
             padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
+            position: relative;
         }
 
         .start-user:hover { background: rgba(255,255,255,0.1); }
@@ -895,6 +963,43 @@
         }
 
         .start-user span { color: #fff; font-size: 13px; }
+
+        /* User Menu */
+        #user-menu {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            background: rgba(40, 40, 40, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 200px;
+            display: none;
+            z-index: 300;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        #user-menu.show { display: block; }
+
+        .user-menu-item {
+            padding: 10px 16px;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-menu-item:hover { background: rgba(255,255,255,0.1); }
+        .user-menu-item:first-child { border-radius: 8px 8px 0 0; }
+        .user-menu-item:last-child { border-radius: 0 0 8px 8px; }
+
+        .user-menu-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 4px 0;
+        }
 
         .power-btn {
             width: 36px;
@@ -989,9 +1094,11 @@
             color: #fff;
             font-size: 11px;
             max-width: 160px;
+            transition: background 0.2s;
         }
 
-        .browser-tab.active { background: rgba(255,255,255,0.1); }
+        .browser-tab:hover { background: rgba(255,255,255,0.08); }
+        .browser-tab.active { background: rgba(255,255,255,0.12); }
         .browser-tab-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .browser-tab-close {
@@ -1041,7 +1148,7 @@
         }
 
         .browser-nav-btn:hover { background: rgba(255,255,255,0.1); }
-        .browser-nav-btn:disabled { opacity: 0.3; }
+        .browser-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .browser-url-bar {
             flex: 1;
@@ -1075,7 +1182,32 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .browser-home.theme-light {
             background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .browser-home.theme-dark {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .browser-home.theme-dark .browser-search-box {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .browser-home.theme-dark .browser-search-box input {
+            background: transparent;
+            color: #fff;
+        }
+
+        .browser-home.theme-dark .browser-search-box input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .browser-home.theme-dark .browser-shortcut span {
+            color: #fff;
         }
 
         .browser-logo { font-size: 42px; margin-bottom: 25px; color: #0078d4; }
@@ -1134,6 +1266,172 @@
         }
 
         .browser-shortcut span { color: #333; font-size: 11px; }
+
+        /* Opera specific */
+        .opera-sidebar {
+            width: 50px;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            gap: 8px;
+        }
+
+        .opera-sidebar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .opera-sidebar-btn:hover { background: rgba(255,255,255,0.1); }
+        .opera-sidebar-btn.active { background: rgba(255,255,255,0.15); }
+
+        .opera-bookmarks {
+            position: absolute;
+            left: 60px;
+            top: 80px;
+            width: 250px;
+            background: rgba(30,30,30,0.98);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: none;
+            z-index: 10;
+        }
+
+        .opera-bookmarks.show { display: block; }
+
+        .opera-bookmarks h4 {
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .opera-bookmark-item {
+            padding: 10px 16px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .opera-bookmark-item:hover { background: rgba(255,255,255,0.1); }
+
+        /* ============ STORE ============ */
+        #store-window { width: 900px; height: 600px; top: 40px; left: 100px; }
+
+        .store-layout { display: flex; height: 100%; }
+
+        .store-sidebar {
+            width: 200px;
+            background: rgba(0,0,0,0.2);
+            padding: 16px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .store-sidebar h2 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .store-nav-item {
+            padding: 10px 12px;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .store-nav-item:hover { background: rgba(255,255,255,0.1); }
+        .store-nav-item.active { background: rgba(0,120,212,0.3); }
+
+        .store-main {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .store-main h2 { font-size: 24px; margin-bottom: 20px; font-weight: 400; }
+
+        .store-apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .store-app-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .store-app-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+        .store-app-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .store-app-card h3 {
+            font-size: 15px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .store-app-card p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+        }
+
+        .store-app-card .install-btn {
+            padding: 8px 20px;
+            background: #0078d4;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .store-app-card .install-btn:hover { background: #106ebe; }
+        .store-app-card .install-btn.installed { background: #107c10; }
+
+        .store-future-note {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .store-future-note p {
+            font-size: 14px;
+            font-weight: bold;
+            color: rgba(255,255,255,0.8);
+        }
 
         /* ============ SETTINGS ============ */
         #settings-window { width: 900px; height: 620px; top: 35px; left: 90px; }
@@ -1200,31 +1498,6 @@
             outline: none;
             font-size: 13px;
         }
-
-        .toggle-switch {
-            width: 42px;
-            height: 22px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 11px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .toggle-switch.active { background: #0078d4; }
-
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background: #fff;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: left 0.2s;
-        }
-
-        .toggle-switch.active::after { left: 22px; }
 
         .btn-small {
             padding: 7px 14px;
@@ -1598,7 +1871,7 @@
         .calc-btn.eq:hover { background: #106ebe; }
 
         /* ============ CONTEXT MENU ============ */
-        #context-menu, #icon-context-menu {
+        #context-menu, #icon-context-menu, #taskbar-context-menu {
             position: absolute;
             width: 240px;
             background: rgba(35, 35, 35, 0.98);
@@ -1632,7 +1905,7 @@
         /* ============ NOTIFICATION ============ */
         .notification {
             position: fixed;
-            bottom: 65px;
+            bottom: 80px;
             right: 15px;
             background: rgba(35, 35, 35, 0.95);
             backdrop-filter: blur(20px);
@@ -1798,11 +2071,11 @@
                         </div>
                         <div class="form-group">
                             <label data-i18n="password">Password</label>
-                            <input type="password" id="setup-password" value="1286">
+                            <input type="password" id="setup-password" value="1234">
                         </div>
                         <div class="form-group">
                             <label data-i18n="confirm_password">Confirm Password</label>
-                            <input type="password" id="setup-password2" value="1286">
+                            <input type="password" id="setup-password2" value="1234">
                         </div>
                         <div class="setup-nav">
                             <button class="btn btn-secondary" onclick="prevSetupStep()" data-i18n="back">← Back</button>
@@ -1890,33 +2163,36 @@
 
         <!-- Taskbar -->
         <div class="taskbar">
-            <div class="taskbar-left">
-                <div class="weather-widget">☀️ 22°C</div>
+            <div class="weather-widget">☀️ 22°C</div>
+            <div class="taskbar-divider"></div>
+            <div class="taskbar-center" id="taskbar-center">
+                <!-- Dynamic taskbar items -->
             </div>
-            <div class="taskbar-center">
-                <div class="taskbar-item" id="start-btn" onclick="toggleStartMenu()">
-                    <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z"/></svg>
-                </div>
-                <div class="taskbar-item" id="tb-explorer" onclick="openWindow('explorer')">
-                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
-                </div>
-                <div class="taskbar-item" id="tb-browser" onclick="openWindow('browser')">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
-                </div>
-                <div class="taskbar-item" id="tb-player" onclick="openWindow('player')">
-                    <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <div class="taskbar-divider"></div>
+            <div class="system-tray">
+                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+            </div>
+            <div class="clock" onclick="toggleCalendar()">
+                <div class="clock-time" id="clock-time">12:00</div>
+                <div class="clock-date" id="clock-date">01.01</div>
+            </div>
+        </div>
+
+        <!-- Calendar Popup -->
+        <div id="calendar-popup">
+            <div class="calendar-time">
+                <div class="big-time" id="calendar-time">12:00:00</div>
+                <div class="big-date" id="calendar-date-full">1 января 2024</div>
+            </div>
+            <div class="calendar-header">
+                <h3 id="calendar-month">Январь 2024</h3>
+                <div class="calendar-nav">
+                    <button onclick="changeCalendarMonth(-1)">‹</button>
+                    <button onclick="changeCalendarMonth(1)">›</button>
                 </div>
             </div>
-            <div class="taskbar-right">
-                <div class="system-tray">
-                    <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-                </div>
-                <div class="clock">
-                    <div class="clock-time" id="clock-time">12:00</div>
-                    <div class="clock-date" id="clock-date">01.01</div>
-                </div>
-            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
         </div>
 
         <!-- Start Menu -->
@@ -1929,9 +2205,21 @@
                 <div class="pinned-apps" id="pinned-apps"></div>
             </div>
             <div class="start-footer">
-                <div class="start-user">
+                <div class="start-user" onclick="toggleUserMenu(event)">
                     <div class="start-user-avatar" id="start-avatar">A</div>
                     <span id="start-name">Artuom</span>
+                    <!-- User Menu -->
+                    <div id="user-menu">
+                        <div class="user-menu-item" onclick="signOut()">
+                            <span>🚪</span>
+                            <span data-i18n="sign_out">Sign out</span>
+                        </div>
+                        <div class="user-menu-divider"></div>
+                        <div class="user-menu-item" onclick="restartPC()">
+                            <span>🔄</span>
+                            <span data-i18n="restart">Restart</span>
+                        </div>
+                    </div>
                 </div>
                 <button class="power-btn" onclick="shutdownPC()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
@@ -1939,7 +2227,7 @@
             </div>
         </div>
 
-        <!-- Browser Window -->
+        <!-- Browser Window (Edge) -->
         <div class="window" id="browser-window">
             <div class="window-header">
                 <div class="window-title">🌐 Microsoft Edge</div>
@@ -1962,6 +2250,77 @@
                     </div>
                 </div>
                 <div class="browser-content" id="browser-view"></div>
+            </div>
+            <div class="window-resize"></div>
+        </div>
+
+        <!-- Opera Window -->
+        <div class="window" id="opera-window">
+            <div class="window-header">
+                <div class="window-title">🔴 Opera</div>
+                <div class="window-controls">
+                    <div class="window-control minimize" onclick="minimizeWindow('opera')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('opera')"></div>
+                    <div class="window-control close" onclick="closeWindow('opera')"></div>
+                </div>
+            </div>
+            <div class="window-content" style="flex-direction: row;">
+                <div class="opera-sidebar">
+                    <div class="opera-sidebar-btn" onclick="toggleOperaBookmarks()" title="Bookmarks">⭐</div>
+                    <div class="opera-sidebar-btn" onclick="operaHome()" title="Home">🏠</div>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; position: relative;">
+                    <div class="opera-bookmarks" id="opera-bookmarks">
+                        <h4>⭐ Закладки</h4>
+                        <div class="opera-bookmark-item" onclick="operaGoToSite('https://google.com')">🔍 Google</div>
+                        <div class="opera-bookmark-item" onclick="operaGoToSite('https://youtube.com')">▶️ YouTube</div>
+                        <div class="opera-bookmark-item" onclick="operaGoToSite('https://github.com')">🐙 GitHub</div>
+                        <div class="opera-bookmark-item" onclick="operaGoToSite('https://twitter.com')">🐦 Twitter</div>
+                        <div class="opera-bookmark-item" onclick="operaGoToSite('https://reddit.com')">🤖 Reddit</div>
+                    </div>
+                    <div class="browser-tabs" id="opera-tabs"></div>
+                    <div class="browser-toolbar">
+                        <button class="browser-nav-btn" id="opera-back" onclick="operaBack()" disabled>←</button>
+                        <button class="browser-nav-btn" id="opera-forward" onclick="operaForward()" disabled>→</button>
+                        <button class="browser-nav-btn" onclick="operaRefresh()">🔄</button>
+                        <button class="browser-nav-btn" onclick="operaHome()">🏠</button>
+                        <div class="browser-url-bar">
+                            <span class="lock">🔒</span>
+                            <input type="text" class="browser-url" id="opera-url" onkeydown="if(event.key==='Enter')operaNavigateUrl()">
+                        </div>
+                    </div>
+                    <div class="browser-content" id="opera-view"></div>
+                </div>
+            </div>
+            <div class="window-resize"></div>
+        </div>
+
+        <!-- Store Window -->
+        <div class="window" id="store-window">
+            <div class="window-header">
+                <div class="window-title">🛒 OpenWFGRStore</div>
+                <div class="window-controls">
+                    <div class="window-control minimize" onclick="minimizeWindow('store')"></div>
+                    <div class="window-control maximize" onclick="maximizeWindow('store')"></div>
+                    <div class="window-control close" onclick="closeWindow('store')"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="store-layout">
+                    <div class="store-sidebar">
+                        <h2>🛒 Store</h2>
+                        <div class="store-nav-item active">🏠 Главная</div>
+                        <div class="store-nav-item">📱 Приложения</div>
+                        <div class="store-nav-item">🎮 Игры</div>
+                    </div>
+                    <div class="store-main">
+                        <h2>Приложения</h2>
+                        <div class="store-apps" id="store-apps"></div>
+                        <div class="store-future-note">
+                            <p>В будущем будет больше приложений.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="window-resize"></div>
         </div>
@@ -2013,7 +2372,7 @@
         <div class="window" id="settings-window">
             <div class="window-header">
                 <div class="window-title" data-i18n="settings">⚙️ Settings</div>
-                                <div class="window-controls">
+                <div class="window-controls">
                     <div class="window-control minimize" onclick="minimizeWindow('settings')"></div>
                     <div class="window-control maximize" onclick="maximizeWindow('settings')"></div>
                     <div class="window-control close" onclick="closeWindow('settings')"></div>
@@ -2028,7 +2387,6 @@
                         <div class="settings-nav-item" onclick="showSettingsTab('about', this)">ℹ️ <span data-i18n="about">About</span></div>
                     </div>
                     <div class="settings-main">
-                        <!-- Account Tab -->
                         <div id="settings-account">
                             <h2 data-i18n="accounts">Accounts</h2>
                             <div class="setting-card">
@@ -2048,7 +2406,6 @@
                             </div>
                         </div>
 
-                        <!-- Personalization Tab -->
                         <div id="settings-personalization" style="display: none;">
                             <h2 data-i18n="personalization">Personalization</h2>
                             <h3 style="font-size: 14px; margin-bottom: 12px; font-weight: 400;" data-i18n="wallpaper">Wallpaper</h3>
@@ -2059,9 +2416,10 @@
                                 <span>📁</span>
                                 <p data-i18n="drop_image">Drop image or video here</p>
                             </div>
+                            <input type="file" id="wallpaper-file" accept="image/*,video/*" style="display:none" onchange="handleWallpaperFile(this)">
+                            <button class="btn-small" style="margin-top: 10px;" onclick="document.getElementById('wallpaper-file').click()">📂 Выбрать файл</button>
                         </div>
 
-                        <!-- Language Tab -->
                         <div id="settings-language" style="display: none;">
                             <h2 data-i18n="language">Language</h2>
                             <div class="setting-card">
@@ -2077,7 +2435,6 @@
                             </div>
                         </div>
 
-                        <!-- About Tab -->
                         <div id="settings-about" style="display: none;">
                             <h2 data-i18n="about">About</h2>
                             <div class="setting-card">
@@ -2114,7 +2471,7 @@
             <div class="window-content">
                 <div class="recycle-toolbar">
                     <button onclick="restoreSelected()" id="restore-btn" disabled data-i18n="restore">♻️ Restore</button>
-                    <button onclick="deleteForever()" id="delete-btn" disabled data-i18n="delete">❌ Delete</button>
+                    <button onclick="deleteForever()" id="delete-btn" disabled data-i18n="delete_permanent">❌ Delete</button>
                     <button onclick="emptyRecycleBin()" data-i18n="empty_bin">🗑️ Empty</button>
                 </div>
                 <div class="recycle-content" id="recycle-content"></div>
@@ -2219,11 +2576,17 @@
         <div id="icon-context-menu">
             <div class="ctx-item" onclick="ctxOpenIcon()"><span class="icon">📂</span><span data-i18n="open">Open</span></div>
             <div class="ctx-divider"></div>
+            <div class="ctx-item" onclick="ctxPinToTaskbar()"><span class="icon">📌</span><span data-i18n="pin_taskbar">Pin to Taskbar</span></div>
+            <div class="ctx-divider"></div>
             <div class="ctx-item" onclick="ctxCutIcon()"><span class="icon">✂️</span><span data-i18n="cut">Cut</span><span class="key">Ctrl+X</span></div>
             <div class="ctx-item" onclick="ctxCopyIcon()"><span class="icon">📋</span><span data-i18n="copy">Copy</span><span class="key">Ctrl+C</span></div>
             <div class="ctx-divider"></div>
             <div class="ctx-item" onclick="ctxRenameIcon()"><span class="icon">✏️</span><span data-i18n="rename">Rename</span><span class="key">F2</span></div>
             <div class="ctx-item" onclick="ctxDeleteIcon()"><span class="icon">🗑️</span><span data-i18n="delete">Delete</span><span class="key">Del</span></div>
+        </div>
+
+        <div id="taskbar-context-menu">
+            <div class="ctx-item" onclick="ctxUnpinFromTaskbar()"><span class="icon">📌</span><span data-i18n="unpin_taskbar">Unpin from Taskbar</span></div>
         </div>
     </div>
 
@@ -2242,7 +2605,6 @@
         // ==================== TRANSLATIONS ====================
         const i18n = {
             ru: {
-                // Setup
                 setup_lang_title: 'Язык',
                 setup_lang_desc: 'Выберите язык системы',
                 setup_account_title: 'Учётная запись',
@@ -2257,12 +2619,8 @@
                 next: 'Далее →',
                 back: '← Назад',
                 finish: 'Готово ✓',
-                
-                // Login
                 click_to_login: 'Нажмите для входа',
                 wrong_password: 'Неверный пароль',
-                
-                // Desktop & Apps
                 search: 'Поиск...',
                 pinned: 'Закреплённые',
                 file_explorer: '📁 Проводник',
@@ -2271,8 +2629,6 @@
                 media_player: '🎵 Медиаплеер',
                 calculator: '🖩 Калькулятор',
                 notepad: '📝 Блокнот',
-                
-                // Settings
                 accounts: 'Учётные записи',
                 personalization: 'Персонализация',
                 language: 'Язык',
@@ -2285,8 +2641,6 @@
                 drop_image: 'Перетащите изображение или видео',
                 display_language: 'Язык интерфейса',
                 device_name: 'Имя устройства',
-                
-                // Context menu
                 refresh: 'Обновить',
                 new_folder: 'Новая папка',
                 new_document: 'Новый документ',
@@ -2296,16 +2650,15 @@
                 copy: 'Копировать',
                 rename: 'Переименовать',
                 delete: 'Удалить',
-                
-                // Recycle bin
+                pin_taskbar: 'Закрепить на панели задач',
+                unpin_taskbar: 'Открепить от панели задач',
                 restore: '♻️ Восстановить',
+                delete_permanent: '❌ Удалить навсегда',
                 empty_bin: '🗑️ Очистить',
-                
-                // Media player
                 drop_media: 'Перетащите медиафайл сюда',
                 no_file: 'Нет файла',
-                
-                // Other
+                sign_out: 'Выйти',
+                restart: 'Перезагрузка',
                 cancel: 'Отмена',
                 this_pc: 'Этот компьютер',
                 desktop: 'Рабочий стол',
@@ -2317,8 +2670,6 @@
                 items: 'элементов',
                 access_denied: 'Доступ запрещён',
                 system_folder: 'Системная папка защищена',
-                
-                // Themes
                 theme_light: 'Светлая',
                 theme_dark: 'Тёмная',
                 theme_nature: 'Природа',
@@ -2328,19 +2679,9 @@
                 theme_aurora: 'Аврора',
                 theme_waves: 'Волны',
                 theme_particles: 'Частицы',
-                
-                // Days & months
-                monday: 'Понедельник',
-                tuesday: 'Вторник',
-                wednesday: 'Среда',
-                thursday: 'Четверг',
-                friday: 'Пятница',
-                saturday: 'Суббота',
-                sunday: 'Воскресенье',
-                january: 'января', february: 'февраля', march: 'марта',
-                april: 'апреля', may: 'мая', june: 'июня',
-                july: 'июля', august: 'августа', september: 'сентября',
-                october: 'октября', november: 'ноября', december: 'декабря'
+                months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                monthsGen: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+                days: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
             },
             en: {
                 setup_lang_title: 'Language',
@@ -2388,10 +2729,15 @@
                 copy: 'Copy',
                 rename: 'Rename',
                 delete: 'Delete',
+                pin_taskbar: 'Pin to Taskbar',
+                unpin_taskbar: 'Unpin from Taskbar',
                 restore: '♻️ Restore',
+                delete_permanent: '❌ Delete permanently',
                 empty_bin: '🗑️ Empty',
                 drop_media: 'Drop media file here',
                 no_file: 'No file',
+                sign_out: 'Sign out',
+                restart: 'Restart',
                 cancel: 'Cancel',
                 this_pc: 'This PC',
                 desktop: 'Desktop',
@@ -2412,12 +2758,9 @@
                 theme_aurora: 'Aurora',
                 theme_waves: 'Waves',
                 theme_particles: 'Particles',
-                monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
-                thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
-                january: 'January', february: 'February', march: 'March',
-                april: 'April', may: 'May', june: 'June',
-                july: 'July', august: 'August', september: 'September',
-                october: 'October', november: 'November', december: 'December'
+                months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                monthsGen: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
             }
         };
 
@@ -2437,12 +2780,14 @@
         // ==================== SYSTEM STATE ====================
         let state = {
             username: 'Artuom',
-            password: '1286',
+            password: '1234',
             theme: 'light',
             language: 'ru',
             customWallpaper: null,
-            customWallpaperType: null, // 'image' or 'video'
-            setupDone: false
+            customWallpaperType: null,
+            setupDone: false,
+            pinnedTaskbar: ['start', 'explorer', 'browser', 'store', 'player'],
+            installedApps: ['opera']
         };
 
         // ==================== FILE SYSTEM ====================
@@ -2453,6 +2798,7 @@
             'pictures': [{ name: 'Photo.jpg', icon: '🖼️', type: 'file' }],
             'music': [{ name: 'Song.mp3', icon: '🎵', type: 'file' }],
             'videos': [{ name: 'Video.mp4', icon: '🎬', type: 'file' }],
+            'recycle': [],
             'C:': [
                 { name: 'Program Files', icon: '📁', type: 'folder', locked: true },
                 { name: 'Windows', icon: '📁', type: 'folder', locked: true },
@@ -2465,6 +2811,8 @@
         let clipboard = null;
         let clipboardAction = null;
         let contextClickPos = { x: 0, y: 0 };
+        let contextTaskbarItem = null;
+        let calendarDate = new Date();
 
         // ==================== INITIALIZATION ====================
         function init() {
@@ -2475,6 +2823,8 @@
             initExplorerSidebar();
             initPlayer();
             initWallpaperDrop();
+            initTaskbar();
+            initStore();
             startBoot();
         }
 
@@ -2483,10 +2833,419 @@
             if (saved) {
                 state = { ...state, ...JSON.parse(saved) };
             }
+            const savedRecycle = localStorage.getItem('recycleBin');
+            if (savedRecycle) {
+                recycleBin = JSON.parse(savedRecycle);
+            }
         }
 
         function saveState() {
             localStorage.setItem('win12', JSON.stringify(state));
+            localStorage.setItem('recycleBin', JSON.stringify(recycleBin));
+        }
+
+        // ==================== CALENDAR ====================
+        function toggleCalendar() {
+            const cal = document.getElementById('calendar-popup');
+            cal.classList.toggle('show');
+            if (cal.classList.contains('show')) {
+                renderCalendar();
+                updateCalendarTime();
+            }
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const tr = i18n[state.language];
+            
+            // Header
+            document.getElementById('calendar-month').textContent = 
+                tr.months[calendarDate.getMonth()] + ' ' + calendarDate.getFullYear();
+            
+            // Day headers
+            let html = '';
+            tr.days.forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            // Days
+            const firstDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+            const lastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 0);
+            let startDay = firstDay.getDay() - 1;
+            if (startDay < 0) startDay = 6;
+            
+            const prevMonth = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 0);
+            for (let i = startDay - 1; i >= 0; i--) {
+                html += `<div class="calendar-day other-month">${prevMonth.getDate() - i}</div>`;
+            }
+            
+            const today = new Date();
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                const isToday = i === today.getDate() && 
+                    calendarDate.getMonth() === today.getMonth() && 
+                    calendarDate.getFullYear() === today.getFullYear();
+                html += `<div class="calendar-day${isToday ? ' today' : ''}">${i}</div>`;
+            }
+            
+            const remaining = 42 - (startDay + lastDay.getDate());
+            for (let i = 1; i <= remaining; i++) {
+                html += `<div class="calendar-day other-month">${i}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        function changeCalendarMonth(delta) {
+            calendarDate.setMonth(calendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function updateCalendarTime() {
+            const now = new Date();
+            const tr = i18n[state.language];
+            document.getElementById('calendar-time').textContent = 
+                now.toLocaleTimeString(state.language === 'ru' ? 'ru-RU' : 'en-US');
+            document.getElementById('calendar-date-full').textContent = 
+                now.getDate() + ' ' + tr.monthsGen[now.getMonth()] + ' ' + now.getFullYear();
+        }
+
+        setInterval(() => {
+            if (document.getElementById('calendar-popup').classList.contains('show')) {
+                updateCalendarTime();
+            }
+        }, 1000);
+
+        // ==================== STORE ====================
+        function initStore() {
+            const container = document.getElementById('store-apps');
+            const apps = [
+                { id: 'opera', name: 'Opera', icon: '🔴', desc: 'Быстрый браузер с VPN', color: '#ff1b2d' }
+            ];
+
+            container.innerHTML = '';
+            apps.forEach(app => {
+                const installed = state.installedApps.includes(app.id);
+                const div = document.createElement('div');
+                div.className = 'store-app-card';
+                div.innerHTML = `
+                    <div class="store-app-icon" style="background: ${app.color}">${app.icon}</div>
+                    <h3>${app.name}</h3>
+                    <p>${app.desc}</p>
+                    <button class="install-btn ${installed ? 'installed' : ''}" onclick="installApp('${app.id}', this)">
+                        ${installed ? '✓ Установлено' : 'Установить'}
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function installApp(appId, btn) {
+            if (state.installedApps.includes(appId)) {
+                openWindow(appId);
+                return;
+            }
+            
+            btn.textContent = 'Установка...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                state.installedApps.push(appId);
+                saveState();
+                btn.textContent = '✓ Установлено';
+                btn.classList.add('installed');
+                btn.disabled = false;
+                
+                // Add to desktop
+                desktopIcons.push({
+                    id: 'icon-' + appId,
+                    name: appId.charAt(0).toUpperCase() + appId.slice(1),
+                    icon: '🔴',
+                    action: appId,
+                    x: 20,
+                    y: 470
+                });
+                renderDesktopIcons();
+                
+                showNotification('OpenWFGRStore', appId + ' установлено!');
+            }, 1500);
+        }
+
+        // ==================== OPERA BROWSER ====================
+        let operaTabs = [];
+        let operaActiveTabId = 0;
+        let operaTabIdCounter = 0;
+
+        function initOpera() {
+            if (operaTabs.length === 0) {
+                operaTabs.push({ id: operaTabIdCounter++, url: '', title: 'New Tab', history: [], histIdx: -1 });
+                operaActiveTabId = 0;
+            }
+            renderOperaTabs();
+            loadOperaTab(operaActiveTabId);
+        }
+
+        function renderOperaTabs() {
+            const container = document.getElementById('opera-tabs');
+            container.innerHTML = '';
+            operaTabs.forEach(tab => {
+                const div = document.createElement('div');
+                div.className = 'browser-tab' + (tab.id === operaActiveTabId ? ' active' : '');
+                div.innerHTML = `
+                    <span>🔴</span>
+                    <span class="browser-tab-title">${tab.title}</span>
+                    <span class="browser-tab-close" onclick="closeOperaTab(${tab.id}, event)">×</span>
+                `;
+                div.onclick = (e) => {
+                    if (!e.target.classList.contains('browser-tab-close')) {
+                        operaActiveTabId = tab.id;
+                        renderOperaTabs();
+                        loadOperaTab(tab.id);
+                    }
+                };
+                container.appendChild(div);
+            });
+            container.innerHTML += '<div class="browser-new-tab" onclick="newOperaTab()">+</div>';
+        }
+
+        function newOperaTab() {
+            const tab = { id: operaTabIdCounter++, url: '', title: 'New Tab', history: [], histIdx: -1 };
+            operaTabs.push(tab);
+            operaActiveTabId = tab.id;
+            renderOperaTabs();
+            loadOperaTab(tab.id);
+        }
+
+        function closeOperaTab(id, e) {
+            e?.stopPropagation();
+            if (operaTabs.length === 1) { closeWindow('opera'); operaTabs = []; return; }
+            const idx = operaTabs.findIndex(t => t.id === id);
+            operaTabs.splice(idx, 1);
+            if (operaActiveTabId === id) {
+                operaActiveTabId = operaTabs[Math.min(idx, operaTabs.length - 1)].id;
+                loadOperaTab(operaActiveTabId);
+            }
+            renderOperaTabs();
+        }
+
+        function loadOperaTab(id) {
+            const tab = operaTabs.find(t => t.id === id);
+            if (!tab) return;
+            
+            document.getElementById('opera-url').value = tab.url || '';
+            updateOperaNav(tab);
+
+            const view = document.getElementById('opera-view');
+            if (!tab.url) {
+                const themeClass = isDarkTheme() ? 'theme-dark' : 'theme-light';
+                view.innerHTML = `
+                    <div class="browser-home ${themeClass}">
+                        <div class="browser-logo" style="color: #ff1b2d;">Opera</div>
+                        <div class="browser-search-box">
+                            <input type="text" id="opera-search" placeholder="${t('search')}" onkeydown="if(event.key==='Enter')operaSearchWeb()">
+                            <button onclick="operaSearchWeb()" style="background: #ff1b2d;">🔍</button>
+                        </div>
+                        <div class="browser-shortcuts">
+                            <div class="browser-shortcut" onclick="operaGoToSite('https://google.com')"><div class="browser-shortcut-icon">🔍</div><span>Google</span></div>
+                            <div class="browser-shortcut" onclick="operaGoToSite('https://youtube.com')"><div class="browser-shortcut-icon" style="background:#f00">▶</div><span>YouTube</span></div>
+                            <div class="browser-shortcut" onclick="operaGoToSite('https://github.com')"><div class="browser-shortcut-icon" style="background:#333">🐙</div><span>GitHub</span></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                view.innerHTML = `<iframe class="browser-iframe" src="${tab.url}"></iframe>`;
+            }
+        }
+
+        function operaGoToSite(url) {
+            const tab = operaTabs.find(t => t.id === operaActiveTabId);
+            if (!tab) return;
+            if (tab.histIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.histIdx + 1);
+            tab.history.push(url);
+            tab.histIdx = tab.history.length - 1;
+            tab.url = url;
+            try { tab.title = new URL(url).hostname; } catch { tab.title = url; }
+            loadOperaTab(operaActiveTabId);
+            renderOperaTabs();
+        }
+
+        function operaNavigateUrl() {
+            let url = document.getElementById('opera-url').value.trim();
+            if (!url) return;
+            if (!url.startsWith('http')) url = url.includes('.') ? 'https://' + url : 'https://www.google.com/search?q=' + encodeURIComponent(url);
+            operaGoToSite(url);
+        }
+
+        function operaSearchWeb() {
+            const q = document.getElementById('opera-search')?.value;
+            if (q) operaGoToSite('https://www.google.com/search?q=' + encodeURIComponent(q));
+        }
+
+        function operaBack() {
+            const tab = operaTabs.find(t => t.id === operaActiveTabId);
+            if (tab && tab.histIdx > 0) {
+                tab.histIdx--;
+                tab.url = tab.history[tab.histIdx];
+                loadOperaTab(operaActiveTabId);
+                renderOperaTabs();
+            }
+        }
+
+        function operaForward() {
+            const tab = operaTabs.find(t => t.id === operaActiveTabId);
+            if (tab && tab.histIdx < tab.history.length - 1) {
+                tab.histIdx++;
+                tab.url = tab.history[tab.histIdx];
+                loadOperaTab(operaActiveTabId);
+                renderOperaTabs();
+            }
+        }
+
+        function operaRefresh() { loadOperaTab(operaActiveTabId); }
+
+        function operaHome() {
+            const tab = operaTabs.find(t => t.id === operaActiveTabId);
+            if (tab) {
+                tab.url = '';
+                tab.title = 'New Tab';
+                loadOperaTab(operaActiveTabId);
+                renderOperaTabs();
+            }
+        }
+
+        function updateOperaNav(tab) {
+            document.getElementById('opera-back').disabled = !tab || tab.histIdx <= 0;
+            document.getElementById('opera-forward').disabled = !tab || tab.histIdx >= tab.history.length - 1;
+        }
+
+        function toggleOperaBookmarks() {
+            document.getElementById('opera-bookmarks').classList.toggle('show');
+        }
+
+        // ==================== TASKBAR ====================
+        let taskbarDragItem = null;
+        let taskbarDragIndex = -1;
+
+        function initTaskbar() {
+            renderTaskbar();
+        }
+
+        function renderTaskbar() {
+            const container = document.getElementById('taskbar-center');
+            container.innerHTML = '';
+
+            const startBtn = document.createElement('div');
+            startBtn.className = 'taskbar-item';
+            startBtn.id = 'start-btn';
+            startBtn.onclick = toggleStartMenu;
+            startBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z"/></svg>`;
+            container.appendChild(startBtn);
+
+            const pinnedApps = [
+                { id: 'explorer', icon: '📁' },
+                { id: 'browser', icon: '🌐' },
+                { id: 'store', icon: '🛒' },
+                { id: 'opera', icon: '🔴' },
+                { id: 'player', icon: '🎵' },
+                { id: 'settings', icon: '⚙️' },
+                { id: 'notepad', icon: '📝' },
+                { id: 'calculator', icon: '🖩' },
+                { id: 'recycle', icon: '🗑️' }
+            ];
+
+            state.pinnedTaskbar.forEach((appId, index) => {
+                if (appId === 'start') return;
+                
+                const app = pinnedApps.find(a => a.id === appId);
+                if (!app) return;
+
+                const item = document.createElement('div');
+                item.className = 'taskbar-item pinned';
+                item.id = 'tb-' + appId;
+                item.dataset.appId = appId;
+                item.dataset.index = index;
+                item.draggable = true;
+                item.innerHTML = `<span class="icon-emoji">${app.icon}</span>`;
+                item.onclick = () => openWindow(appId);
+                item.oncontextmenu = (e) => showTaskbarContextMenu(e, appId);
+                
+                item.ondragstart = (e) => {
+                    taskbarDragItem = item;
+                    taskbarDragIndex = index;
+                    item.style.opacity = '0.5';
+                };
+                item.ondragend = () => {
+                    item.style.opacity = '1';
+                    taskbarDragItem = null;
+                };
+                item.ondragover = (e) => {
+                    e.preventDefault();
+                    if (taskbarDragItem && taskbarDragItem !== item) {
+                        const targetIndex = parseInt(item.dataset.index);
+                        reorderTaskbar(taskbarDragIndex, targetIndex);
+                    }
+                };
+                
+                container.appendChild(item);
+            });
+        }
+
+        function reorderTaskbar(fromIndex, toIndex) {
+            const item = state.pinnedTaskbar[fromIndex];
+            state.pinnedTaskbar.splice(fromIndex, 1);
+            state.pinnedTaskbar.splice(toIndex, 0, item);
+            taskbarDragIndex = toIndex;
+            saveState();
+            renderTaskbar();
+            updateTaskbarActiveStates();
+        }
+
+        function showTaskbarContextMenu(e, appId) {
+            e.preventDefault();
+            e.stopPropagation();
+            contextTaskbarItem = appId;
+            hideAllMenus();
+            const menu = document.getElementById('taskbar-context-menu');
+            menu.style.display = 'block';
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = (e.clientY - 50) + 'px';
+        }
+
+        function ctxUnpinFromTaskbar() {
+            hideAllMenus();
+            if (contextTaskbarItem) {
+                const idx = state.pinnedTaskbar.indexOf(contextTaskbarItem);
+                if (idx > -1) {
+                    state.pinnedTaskbar.splice(idx, 1);
+                    saveState();
+                    renderTaskbar();
+                }
+            }
+        }
+
+        function ctxPinToTaskbar() {
+            hideAllMenus();
+            if (contextIconIdx >= 0) {
+                const icon = desktopIcons[contextIconIdx];
+                if (icon.action && !state.pinnedTaskbar.includes(icon.action)) {
+                    state.pinnedTaskbar.push(icon.action);
+                    saveState();
+                    renderTaskbar();
+                }
+            }
+        }
+
+        function updateTaskbarActiveStates() {
+            document.querySelectorAll('.taskbar-item').forEach(item => {
+                const appId = item.dataset.appId;
+                if (appId) {
+                    const win = document.getElementById(appId + '-window');
+                    if (win && win.style.display !== 'none') {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                }
+            });
         }
 
         // ==================== LANGUAGE ====================
@@ -2499,24 +3258,16 @@
         }
 
         function applyLanguage() {
-            const lang = state.language;
-            const t = i18n[lang];
-
+            const tr = i18n[state.language];
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (t[key]) el.textContent = t[key];
+                if (tr[key]) el.textContent = tr[key];
             });
-
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                if (t[key]) el.placeholder = t[key];
+                if (tr[key]) el.placeholder = tr[key];
             });
-
-            // Update dynamic content
             updateClock();
-            if (document.getElementById('desktop').style.display !== 'none') {
-                renderExplorer();
-            }
         }
 
         function t(key) {
@@ -2526,6 +3277,7 @@
         // ==================== THEMES ====================
         function initThemeGrid() {
             const grid = document.getElementById('theme-grid');
+            if (!grid) return;
             grid.innerHTML = '';
 
             const themeList = [
@@ -2563,6 +3315,8 @@
 
         function selectThemeInSetup(themeId, el) {
             state.theme = themeId;
+            state.customWallpaper = null;
+            state.customWallpaperType = null;
             document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
             applyThemeToElement(document.getElementById('setup-bg'), themeId);
@@ -2614,20 +3368,19 @@
         function applyTheme() {
             applyThemeToElement(document.getElementById('desktop-bg'), state.theme);
             applyThemeToElement(document.getElementById('login-bg'), state.theme);
+            applyThemeToElement(document.getElementById('setup-bg'), state.theme);
             initWallpaperGrid();
         }
 
         function applyThemeToElement(el, themeId) {
             if (!el) return;
 
-            // Clear previous
-            el.className = el.id === 'desktop-bg' || el.id === 'login-bg' || el.id === 'setup-bg' ? el.id.replace('-', '-') : '';
-            el.classList.add(el.id);
+            el.className = el.id;
             el.style.background = '';
+            el.style.backgroundImage = '';
             el.innerHTML = '';
 
-            // Custom wallpaper
-            if (state.customWallpaper && (el.id === 'desktop-bg' || el.id === 'login-bg')) {
+            if (state.customWallpaper) {
                 if (state.customWallpaperType === 'video') {
                     const video = document.createElement('video');
                     video.className = 'bg-video';
@@ -2635,7 +3388,9 @@
                     video.autoplay = true;
                     video.loop = true;
                     video.muted = true;
+                    video.playsInline = true;
                     el.appendChild(video);
+                    video.play().catch(() => {});
                 } else {
                     el.style.backgroundImage = `url(${state.customWallpaper})`;
                     el.classList.add('bg-custom-image');
@@ -2665,7 +3420,11 @@
             }
         }
 
-        // ==================== CUSTOM WALLPAPER DROP ====================
+        function isDarkTheme() {
+            return ['dark', 'aurora', 'particles'].includes(state.theme);
+        }
+
+        // ==================== CUSTOM WALLPAPER ====================
         function initWallpaperDrop() {
             const drop = document.getElementById('wallpaper-drop');
             if (!drop) return;
@@ -2679,26 +3438,33 @@
             drop.addEventListener('drop', e => {
                 drop.classList.remove('dragover');
                 const file = e.dataTransfer.files[0];
-                if (!file) return;
-
-                const isVideo = file.type.startsWith('video/');
-                const isImage = file.type.startsWith('image/');
-
-                if (!isVideo && !isImage) {
-                    showNotification(t('error') || 'Error', 'Only images and videos');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    state.customWallpaper = ev.target.result;
-                    state.customWallpaperType = isVideo ? 'video' : 'image';
-                    saveState();
-                    applyTheme();
-                    showNotification(t('personalization'), t('wallpaper') + ' updated');
-                };
-                reader.readAsDataURL(file);
+                if (file) processWallpaperFile(file);
             });
+        }
+
+        function handleWallpaperFile(input) {
+            const file = input.files[0];
+            if (file) processWallpaperFile(file);
+        }
+
+        function processWallpaperFile(file) {
+            const isVideo = file.type.startsWith('video/');
+            const isImage = file.type.startsWith('image/');
+
+            if (!isVideo && !isImage) {
+                showNotification('Error', 'Only images and videos');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = ev => {
+                state.customWallpaper = ev.target.result;
+                state.customWallpaperType = isVideo ? 'video' : 'image';
+                saveState();
+                applyTheme();
+                showNotification(t('personalization'), t('wallpaper') + ' updated');
+            };
+            reader.readAsDataURL(file);
         }
 
         // ==================== START MENU ====================
@@ -2706,11 +3472,17 @@
             const apps = [
                 { id: 'browser', icon: '🌐', name: 'Edge', color: 'linear-gradient(135deg, #0078d4, #00bcf2)' },
                 { id: 'explorer', icon: '📁', name: t('file_explorer').replace('📁 ', ''), color: 'linear-gradient(135deg, #ffc107, #ff9800)' },
+                { id: 'store', icon: '🛒', name: 'Store', color: 'linear-gradient(135deg, #107c10, #0e8a0e)' },
                 { id: 'settings', icon: '⚙️', name: t('settings').replace('⚙️ ', ''), color: 'linear-gradient(135deg, #555, #333)' },
                 { id: 'notepad', icon: '📝', name: 'Notepad', color: 'linear-gradient(135deg, #7c4dff, #448aff)' },
                 { id: 'calculator', icon: '🖩', name: t('calculator').replace('🖩 ', ''), color: 'linear-gradient(135deg, #607d8b, #455a64)' },
-                { id: 'player', icon: '🎵', name: 'Player', color: 'linear-gradient(135deg, #e91e63, #9c27b0)' }
+                { id: 'player', icon: '🎵', name: 'Player', color: 'linear-gradient(135deg, #e91e63, #9c27b0)' },
+                { id: 'recycle', icon: '🗑️', name: t('recycle_bin').replace('🗑️ ', ''), color: 'linear-gradient(135deg, #795548, #5d4037)' }
             ];
+
+            if (state.installedApps.includes('opera')) {
+                apps.splice(1, 0, { id: 'opera', icon: '🔴', name: 'Opera', color: 'linear-gradient(135deg, #ff1b2d, #a4000e)' });
+            }
 
             const container = document.getElementById('pinned-apps');
             container.innerHTML = '';
@@ -2727,11 +3499,17 @@
         }
 
         function toggleStartMenu() {
-            document.getElementById('start-menu').classList.toggle('show');
+            const menu = document.getElementById('start-menu');
+            const userMenu = document.getElementById('user-menu');
+            const calendar = document.getElementById('calendar-popup');
+            userMenu.classList.remove('show');
+            calendar.classList.remove('show');
+            menu.classList.toggle('show');
         }
 
         function closeStartMenu() {
             document.getElementById('start-menu').classList.remove('show');
+            document.getElementById('user-menu').classList.remove('show');
         }
 
         function filterApps(q) {
@@ -2740,6 +3518,35 @@
                 const name = tile.querySelector('span').textContent.toLowerCase();
                 tile.style.display = name.includes(q) ? '' : 'none';
             });
+        }
+
+        // ==================== USER MENU ====================
+        function toggleUserMenu(e) {
+            e.stopPropagation();
+            document.getElementById('user-menu').classList.toggle('show');
+        }
+
+        function signOut() {
+            closeStartMenu();
+            document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
+            document.getElementById('desktop').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('password-box').classList.remove('show');
+            document.getElementById('click-hint').style.display = 'block';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').style.display = 'none';
+            updateLoginTime();
+        }
+
+        function restartPC() {
+            closeStartMenu();
+            document.getElementById('desktop').style.display = 'none';
+            document.getElementById('boot-screen').style.display = 'flex';
+            document.querySelector('.boot-hint').textContent = state.language === 'ru' ? 'Перезагрузка...' : 'Restarting...';
+            
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
         }
 
         // ==================== EXPLORER SIDEBAR ====================
@@ -2754,14 +3561,16 @@
                 { path: 'pictures', icon: '🖼️', key: 'pictures' },
                 { path: 'music', icon: '🎵', key: 'music' },
                 { path: 'videos', icon: '🎬', key: 'videos' },
-                { path: 'C:', icon: '💿', key: 'this_pc', label: 'C:' }
+                { path: 'recycle', icon: '🗑️', key: 'recycle_bin' },
+                { path: 'C:', icon: '💿', key: 'this_pc' }
             ];
 
-            sidebar.innerHTML = '<div class="explorer-sidebar-title" data-i18n="this_pc">' + t('this_pc') + '</div>';
+            sidebar.innerHTML = '<div class="explorer-sidebar-title">' + t('this_pc') + '</div>';
             items.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'explorer-sidebar-item';
-                div.innerHTML = `${item.icon} <span data-i18n="${item.key}">${t(item.key)}</span>${item.label ? ' ' + item.label : ''}`;
+                div.dataset.path = item.path;
+                div.innerHTML = `${item.icon} <span>${t(item.key)}</span>`;
                 div.onclick = () => navigateExplorer(item.path);
                 sidebar.appendChild(div);
             });
@@ -2804,8 +3613,6 @@
             document.getElementById('boot-screen').style.display = 'none';
             document.getElementById('bios-screen').style.display = 'block';
             showBiosSection('info');
-            updateBiosTime();
-            setInterval(updateBiosTime, 1000);
         }
 
         function showBiosSection(section) {
@@ -2819,10 +3626,9 @@
                     <p>BIOS: v12.0.0</p>
                     <p>CPU: Intel Core i7</p>
                     <p>RAM: 32 GB</p>
-                    <p>Date: <span id="bios-date"></span></p>
-                    <p>Time: <span id="bios-time"></span></p>
+                    <p>Date: ${new Date().toLocaleDateString()}</p>
+                    <p>Time: ${new Date().toLocaleTimeString()}</p>
                 `;
-                updateBiosTime();
             } else if (section === 'recovery') {
                 main.innerHTML = `
                     <h3 style="color: #f66; margin-bottom: 12px;">⚠️ Recovery Reset</h3>
@@ -2832,7 +3638,7 @@
             } else if (section === 'exit') {
                 main.innerHTML = `
                     <h3 style="color: #ff0; margin-bottom: 12px;">Save & Exit</h3>
-                    <button onclick="exitBios()" style="display: block; width: 100%; padding: 10px; margin-bottom: 8px; background: #080; color: #fff; border: 2px solid #fff; cursor: pointer;">Exit</button>
+                    <button onclick="exitBios()" style="display: block; width: 100%; padding: 10px; background: #080; color: #fff; border: 2px solid #fff; cursor: pointer;">Exit</button>
                 `;
             }
         }
@@ -2840,14 +3646,6 @@
         document.querySelectorAll('.bios-menu-item').forEach(item => {
             item.onclick = () => showBiosSection(item.dataset.section);
         });
-
-        function updateBiosTime() {
-            const now = new Date();
-            const dateEl = document.getElementById('bios-date');
-            const timeEl = document.getElementById('bios-time');
-            if (dateEl) dateEl.textContent = now.toLocaleDateString();
-            if (timeEl) timeEl.textContent = now.toLocaleTimeString();
-        }
 
         function doRecovery() {
             recoveryMode = true;
@@ -2863,8 +3661,7 @@
             document.getElementById('bios-screen').style.display = 'none';
             if (recoveryMode) {
                 localStorage.clear();
-                state = { username: 'Artuom', password: '1286', theme: 'light', language: 'ru', setupDone: false };
-                recoveryMode = false;
+                location.reload();
             }
             document.getElementById('boot-screen').style.display = 'flex';
             deleteCount = 0;
@@ -2899,7 +3696,6 @@
             }
 
             if (setupStep === 3) {
-                // Update summary
                 document.getElementById('summary-user').textContent = '👤 ' + t('username') + ': ' + state.username;
                 document.getElementById('summary-lang').textContent = '🌍 ' + t('language') + ': ' + (state.language === 'ru' ? 'Русский' : 'English');
                 document.getElementById('summary-theme').textContent = '🎨 Theme: ' + t('theme_' + state.theme);
@@ -2953,12 +3749,9 @@
 
         function updateLoginTime() {
             const now = new Date();
+            const tr = i18n[state.language];
             document.getElementById('login-time').textContent = now.toLocaleTimeString(state.language === 'ru' ? 'ru-RU' : 'en-US', { hour: '2-digit', minute: '2-digit' });
-
-            const months = state.language === 'ru' 
-                ? ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
-                : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            document.getElementById('login-date').textContent = now.getDate() + ' ' + months[now.getMonth()];
+            document.getElementById('login-date').textContent = now.getDate() + ' ' + tr.monthsGen[now.getMonth()];
         }
 
         function showPasswordBox() {
@@ -2994,6 +3787,7 @@
             initDesktopIcons();
             initStartMenu();
             initExplorerSidebar();
+            renderTaskbar();
             document.getElementById('desktop').style.display = 'block';
             updateClock();
             setInterval(updateClock, 1000);
@@ -3020,10 +3814,13 @@
             } else {
                 desktopIcons = [
                     { id: 'icon-pc', name: t('this_pc'), icon: '💻', action: 'explorer', x: 20, y: 20 },
-                    { id: 'icon-recycle', name: t('recycle_bin').replace('🗑️ ', ''), icon: '🗑️', action: 'recycle', x: 20, y: 100 },
-                    { id: 'icon-edge', name: 'Edge', icon: '🌐', action: 'browser', x: 20, y: 180 },
-                    { id: 'icon-notepad', name: 'Notepad', icon: '📝', action: 'notepad', x: 20, y: 260 }
+                    { id: 'icon-recycle', name: t('recycle_bin').replace('🗑️ ', ''), icon: '🗑️', action: 'recycle', x: 20, y: 110 },
+                    { id: 'icon-edge', name: 'Edge', icon: '🌐', action: 'browser', x: 20, y: 200 },
+                    { id: 'icon-store', name: 'Store', icon: '🛒', action: 'store', x: 20, y: 290 },
+                    { id: 'icon-notepad', name: 'Notepad', icon: '📝', action: 'notepad', x: 20, y: 380 },
+                    { id: 'icon-settings', name: t('settings').replace('⚙️ ', ''), icon: '⚙️', action: 'settings', x: 20, y: 470 }
                 ];
+                localStorage.setItem('desktopIcons', JSON.stringify(desktopIcons));
             }
             renderDesktopIcons();
         }
@@ -3049,7 +3846,10 @@
         }
 
         function openIconAction(icon) {
-            if (icon.action) {
+            if (icon.action === 'player' && icon.fileData) {
+                openWindow('player');
+                setTimeout(() => loadMediaFromData(icon.fileData, icon.fileType, icon.name), 100);
+            } else if (icon.action) {
                 openWindow(icon.action);
             } else if (icon.type === 'folder') {
                 openWindow('explorer');
@@ -3194,17 +3994,24 @@
         }
 
         document.addEventListener('click', e => {
-            if (!e.target.closest('#context-menu') && !e.target.closest('#icon-context-menu')) {
+            if (!e.target.closest('#context-menu') && !e.target.closest('#icon-context-menu') && !e.target.closest('#taskbar-context-menu')) {
                 hideAllMenus();
             }
-            if (!e.target.closest('#start-menu') && !e.target.closest('#start-btn')) {
+            if (!e.target.closest('#start-menu') && !e.target.closest('#start-btn') && !e.target.closest('.start-user')) {
                 closeStartMenu();
+            }
+            if (!e.target.closest('#calendar-popup') && !e.target.closest('.clock')) {
+                document.getElementById('calendar-popup').classList.remove('show');
+            }
+            if (!e.target.closest('#opera-bookmarks') && !e.target.closest('.opera-sidebar-btn')) {
+                document.getElementById('opera-bookmarks')?.classList.remove('show');
             }
         });
 
         function hideAllMenus() {
             document.getElementById('context-menu').style.display = 'none';
             document.getElementById('icon-context-menu').style.display = 'none';
+            document.getElementById('taskbar-context-menu').style.display = 'none';
         }
 
         function ctxRefresh() {
@@ -3300,7 +4107,7 @@
                 desktopIcons.splice(i, 1);
             });
             renderDesktopIcons();
-            showNotification(t('delete'), 'OK');
+            saveState();
         }
 
         function getSelectedIndices() {
@@ -3377,6 +4184,7 @@
             });
             renderDesktopIcons();
             renderRecycleBin();
+            saveState();
         }
 
         function deleteForever() {
@@ -3384,12 +4192,14 @@
             const indices = Array.from(items).map(el => parseInt(el.dataset.index)).sort((a, b) => b - a);
             indices.forEach(i => recycleBin.splice(i, 1));
             renderRecycleBin();
+            saveState();
         }
 
         function emptyRecycleBin() {
             if (recycleBin.length && confirm(t('empty_bin') + '?')) {
                 recycleBin = [];
                 renderRecycleBin();
+                saveState();
             }
         }
 
@@ -3404,13 +4214,15 @@
             win.style.display = 'flex';
             bringToFront(win);
             closeStartMenu();
+            document.getElementById('calendar-popup').classList.remove('show');
 
-            const tb = document.getElementById('tb-' + id);
-            if (tb) tb.classList.add('active');
+            updateTaskbarActiveStates();
 
-            if (id === 'explorer') { navigateExplorer('desktop'); }
-            if (id === 'recycle') { renderRecycleBin(); }
-            if (id === 'browser') { initBrowser(); }
+            if (id === 'explorer') navigateExplorer('desktop');
+            if (id === 'recycle') renderRecycleBin();
+            if (id === 'browser') initBrowser();
+            if (id === 'opera') initOpera();
+            if (id === 'store') initStore();
             if (id === 'settings') { 
                 document.getElementById('settings-username').value = state.username;
                 initWallpaperGrid();
@@ -3419,8 +4231,7 @@
 
         function closeWindow(id) {
             document.getElementById(id + '-window').style.display = 'none';
-            const tb = document.getElementById('tb-' + id);
-            if (tb) tb.classList.remove('active');
+            updateTaskbarActiveStates();
             if (id === 'player' && mediaElement) {
                 mediaElement.pause();
                 isPlaying = false;
@@ -3429,6 +4240,7 @@
 
         function minimizeWindow(id) {
             document.getElementById(id + '-window').style.display = 'none';
+            updateTaskbarActiveStates();
         }
 
         function maximizeWindow(id) {
@@ -3448,7 +4260,7 @@
                 win.style.top = '0';
                 win.style.left = '0';
                 win.style.width = '100%';
-                win.style.height = 'calc(100% - 52px)';
+                win.style.height = 'calc(100% - 70px)';
                 win.style.borderRadius = '0';
                 win.dataset.max = 'true';
             }
@@ -3501,7 +4313,7 @@
 
         document.addEventListener('mouseup', () => { dragWin = null; resizeWin = null; });
 
-        // ==================== BROWSER ====================
+        // ==================== BROWSER (EDGE) ====================
         let browserTabs = [];
         let activeTabId = 0;
         let tabIdCounter = 0;
@@ -3526,7 +4338,13 @@
                     <span class="browser-tab-title">${tab.title}</span>
                     <span class="browser-tab-close" onclick="closeBrowserTab(${tab.id}, event)">×</span>
                 `;
-                div.onclick = () => { activeTabId = tab.id; loadBrowserTab(tab.id); renderBrowserTabs(); };
+                div.onclick = (e) => {
+                    if (!e.target.classList.contains('browser-tab-close')) {
+                        activeTabId = tab.id;
+                        renderBrowserTabs();
+                        loadBrowserTab(tab.id);
+                    }
+                };
                 container.appendChild(div);
             });
             container.innerHTML += '<div class="browser-new-tab" onclick="newBrowserTab()">+</div>';
@@ -3542,7 +4360,7 @@
 
         function closeBrowserTab(id, e) {
             e?.stopPropagation();
-            if (browserTabs.length === 1) { closeWindow('browser'); return; }
+            if (browserTabs.length === 1) { closeWindow('browser'); browserTabs = []; return; }
             const idx = browserTabs.findIndex(t => t.id === id);
             browserTabs.splice(idx, 1);
             if (activeTabId === id) {
@@ -3554,16 +4372,19 @@
 
         function loadBrowserTab(id) {
             const tab = browserTabs.find(t => t.id === id);
+            if (!tab) return;
+            
             document.getElementById('browser-url').value = tab.url || '';
             updateBrowserNav(tab);
 
             const view = document.getElementById('browser-view');
             if (!tab.url) {
+                const themeClass = isDarkTheme() ? 'theme-dark' : 'theme-light';
                 view.innerHTML = `
-                    <div class="browser-home">
+                    <div class="browser-home ${themeClass}">
                         <div class="browser-logo">Microsoft Edge</div>
                         <div class="browser-search-box">
-                            <input type="text" id="browser-search" placeholder="Search..." onkeydown="if(event.key==='Enter')searchWeb()">
+                            <input type="text" id="browser-search" placeholder="${t('search')}" onkeydown="if(event.key==='Enter')searchWeb()">
                             <button onclick="searchWeb()">🔍</button>
                         </div>
                         <div class="browser-shortcuts">
@@ -3580,6 +4401,7 @@
 
         function goToSite(url) {
             const tab = browserTabs.find(t => t.id === activeTabId);
+            if (!tab) return;
             if (tab.histIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.histIdx + 1);
             tab.history.push(url);
             tab.histIdx = tab.history.length - 1;
@@ -3603,7 +4425,7 @@
 
         function browserBack() {
             const tab = browserTabs.find(t => t.id === activeTabId);
-            if (tab.histIdx > 0) {
+            if (tab && tab.histIdx > 0) {
                 tab.histIdx--;
                 tab.url = tab.history[tab.histIdx];
                 loadBrowserTab(activeTabId);
@@ -3613,7 +4435,7 @@
 
         function browserForward() {
             const tab = browserTabs.find(t => t.id === activeTabId);
-            if (tab.histIdx < tab.history.length - 1) {
+            if (tab && tab.histIdx < tab.history.length - 1) {
                 tab.histIdx++;
                 tab.url = tab.history[tab.histIdx];
                 loadBrowserTab(activeTabId);
@@ -3625,15 +4447,17 @@
 
         function browserHome() {
             const tab = browserTabs.find(t => t.id === activeTabId);
-            tab.url = '';
-            tab.title = 'New Tab';
-            loadBrowserTab(activeTabId);
-            renderBrowserTabs();
+            if (tab) {
+                tab.url = '';
+                tab.title = 'New Tab';
+                loadBrowserTab(activeTabId);
+                renderBrowserTabs();
+            }
         }
 
         function updateBrowserNav(tab) {
-            document.getElementById('browser-back').disabled = tab.histIdx <= 0;
-            document.getElementById('browser-forward').disabled = tab.histIdx >= tab.history.length - 1;
+            document.getElementById('browser-back').disabled = !tab || tab.histIdx <= 0;
+            document.getElementById('browser-forward').disabled = !tab || tab.histIdx >= tab.history.length - 1;
         }
 
         // ==================== EXPLORER ====================
@@ -3642,8 +4466,7 @@
         let expHistIdx = 0;
 
         function navigateExplorer(path) {
-            const parent = path.split('/')[0];
-            if (parent === 'C:' && path !== 'C:') {
+            if (path.startsWith('C:') && path !== 'C:') {
                 showNotification(t('access_denied'), t('system_folder'));
                 return;
             }
@@ -3651,8 +4474,7 @@
             expPath = path;
             if (expHistIdx < expHistory.length - 1) expHistory = expHistory.slice(0, expHistIdx + 1);
             expHistory.push(path);
-            expHistIdx = expHistory.
-			length - 1;
+            expHistIdx = expHistory.length - 1;
             renderExplorer();
         }
 
@@ -3665,6 +4487,7 @@
                 'pictures': t('pictures'),
                 'music': t('music'),
                 'videos': t('videos'),
+                'recycle': t('recycle_bin').replace('🗑️ ', ''),
                 'C:': t('this_pc') + ' (C:)'
             };
 
@@ -3672,10 +4495,19 @@
             document.getElementById('exp-back').disabled = expHistIdx <= 0;
             document.getElementById('exp-forward').disabled = expHistIdx >= expHistory.length - 1;
 
-            const files = fileSystem[expPath] || [];
+            document.querySelectorAll('.explorer-sidebar-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.path === expPath);
+            });
+
+            let files;
+            if (expPath === 'recycle') {
+                files = recycleBin.map(item => ({ name: item.name, icon: item.icon, type: item.type || 'file', isRecycled: true }));
+            } else {
+                files = fileSystem[expPath] || [];
+            }
 
             if (files.length === 0) {
-                content.innerHTML = `<div class="explorer-empty">${t('items').replace(/\d+/, '0')}</div>`;
+                content.innerHTML = `<div class="explorer-empty">${expPath === 'recycle' ? t('recycle_bin').replace('🗑️ ', '') + ' empty' : '0 ' + t('items')}</div>`;
             } else {
                 content.innerHTML = '<div class="explorer-grid" id="explorer-grid"></div>';
                 const grid = document.getElementById('explorer-grid');
@@ -3689,7 +4521,7 @@
                         ${file.locked ? '<span class="lock-icon">🔒</span>' : ''}
                     `;
 
-                    if (!file.locked) {
+                    if (!file.locked && !file.isRecycled) {
                         el.ondblclick = () => {
                             if (file.type === 'folder') {
                                 navigateExplorer(file.path || expPath + '/' + file.name.toLowerCase().replace(/\s+/g, '_'));
@@ -3701,7 +4533,7 @@
                                 document.getElementById('notepad-title').textContent = '📝 ' + file.name;
                             }
                         };
-                    } else {
+                    } else if (file.locked) {
                         el.ondblclick = () => showNotification(t('access_denied'), t('system_folder'));
                     }
 
@@ -3715,11 +4547,6 @@
             }
 
             document.getElementById('explorer-status').textContent = files.length + ' ' + t('items');
-
-            // Update sidebar active state
-            document.querySelectorAll('.explorer-sidebar-item').forEach(el => {
-                el.classList.remove('active');
-            });
         }
 
         function explorerBack() {
@@ -3764,19 +4591,9 @@
         }
 
         function handleMediaDrop(e) {
-            const dropzone = document.getElementById('player-dropzone');
-            dropzone?.classList.remove('dragover');
-
+            document.getElementById('player-dropzone')?.classList.remove('dragover');
             const file = e.dataTransfer.files[0];
-            if (!file) return;
-
-            const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/ogg', 'video/mp4', 'video/webm', 'video/ogg'];
-            if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|mp4|webm|ogg)$/i)) {
-                showNotification('Error', 'Unsupported format');
-                return;
-            }
-
-            loadMediaFile(file);
+            if (file) loadMediaFile(file);
         }
 
         function loadMediaFile(file) {
@@ -3784,10 +4601,7 @@
             const url = URL.createObjectURL(file);
             const isVideo = file.type.startsWith('video/') || file.name.match(/\.(mp4|webm)$/i);
 
-            if (mediaElement) {
-                mediaElement.pause();
-                mediaElement.remove();
-            }
+            if (mediaElement) { mediaElement.pause(); mediaElement.remove(); }
 
             mediaElement = document.createElement(isVideo ? 'video' : 'audio');
             mediaElement.src = url;
@@ -3824,58 +4638,62 @@
             togglePlay();
         }
 
+        function loadMediaFromData(data, type, name) {
+            const display = document.getElementById('player-display');
+            const isVideo = type.startsWith('video/');
+
+            if (mediaElement) { mediaElement.pause(); mediaElement.remove(); }
+
+            mediaElement = document.createElement(isVideo ? 'video' : 'audio');
+            mediaElement.src = data;
+            mediaElement.style.maxWidth = '100%';
+            mediaElement.style.maxHeight = '100%';
+
+            display.innerHTML = '';
+            display.appendChild(mediaElement);
+
+            if (!isVideo) {
+                const info = document.createElement('div');
+                info.style.cssText = 'position: absolute; text-align: center; color: #fff;';
+                info.innerHTML = `<div style="font-size: 70px; margin-bottom: 15px;">🎵</div><div style="font-size: 16px;">${name}</div>`;
+                display.appendChild(info);
+            }
+
+            document.getElementById('player-title').textContent = name;
+            mediaElement.onloadedmetadata = () => document.getElementById('player-duration').textContent = formatTime(mediaElement.duration);
+            mediaElement.ontimeupdate = () => {
+                document.getElementById('player-progress').style.width = (mediaElement.currentTime / mediaElement.duration) * 100 + '%';
+                document.getElementById('player-current').textContent = formatTime(mediaElement.currentTime);
+            };
+            mediaElement.onended = () => { isPlaying = false; document.getElementById('play-btn').textContent = '▶'; };
+
+            togglePlay();
+        }
+
         function togglePlay() {
             if (!mediaElement) return;
-
-            if (isPlaying) {
-                mediaElement.pause();
-                document.getElementById('play-btn').textContent = '▶';
-            } else {
-                mediaElement.play();
-                document.getElementById('play-btn').textContent = '⏸';
-            }
+            if (isPlaying) { mediaElement.pause(); document.getElementById('play-btn').textContent = '▶'; }
+            else { mediaElement.play(); document.getElementById('play-btn').textContent = '⏸'; }
             isPlaying = !isPlaying;
         }
 
         function seekPlayer(e) {
             if (!mediaElement) return;
             const rect = e.currentTarget.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            mediaElement.currentTime = percent * mediaElement.duration;
+            mediaElement.currentTime = ((e.clientX - rect.left) / rect.width) * mediaElement.duration;
         }
 
-        function setVolume(value) {
-            if (mediaElement) mediaElement.volume = value / 100;
-        }
-
-        function playerPrev() {
-            if (mediaElement) mediaElement.currentTime = 0;
-        }
-
-        function playerNext() {
-            if (mediaElement) mediaElement.currentTime = mediaElement.duration;
-        }
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return mins + ':' + (secs < 10 ? '0' : '') + secs;
-        }
+        function setVolume(value) { if (mediaElement) mediaElement.volume = value / 100; }
+        function playerPrev() { if (mediaElement) mediaElement.currentTime = 0; }
+        function playerNext() { if (mediaElement) mediaElement.currentTime = mediaElement.duration; }
+        function formatTime(s) { if (isNaN(s)) return '0:00'; const m = Math.floor(s/60); const sec = Math.floor(s%60); return m + ':' + (sec<10?'0':'') + sec; }
 
         // ==================== CALCULATOR ====================
-        let calcDisplay = '0';
-        let calcExpr = '';
-        let calcNewNum = true;
+        let calcDisplay = '0', calcExpr = '', calcNewNum = true;
 
         function calcNum(n) {
-            if (calcNewNum) {
-                calcDisplay = n === '.' ? '0.' : n;
-                calcNewNum = false;
-            } else {
-                if (n === '.' && calcDisplay.includes('.')) return;
-                calcDisplay += n;
-            }
+            if (calcNewNum) { calcDisplay = n === '.' ? '0.' : n; calcNewNum = false; }
+            else { if (n === '.' && calcDisplay.includes('.')) return; calcDisplay += n; }
             document.getElementById('calc-result').textContent = calcDisplay;
         }
 
@@ -3891,49 +4709,18 @@
                 document.getElementById('calc-expr').textContent = calcExpr + calcDisplay + ' =';
                 calcDisplay = String(Math.round(result * 1000000) / 1000000);
                 document.getElementById('calc-result').textContent = calcDisplay;
-                calcExpr = '';
-                calcNewNum = true;
-            } catch (e) {
-                document.getElementById('calc-result').textContent = 'Error';
-                calcClear();
-            }
+                calcExpr = ''; calcNewNum = true;
+            } catch { document.getElementById('calc-result').textContent = 'Error'; calcClear(); }
         }
 
-        function calcClear() {
-            calcDisplay = '0';
-            calcExpr = '';
-            calcNewNum = true;
-            document.getElementById('calc-result').textContent = '0';
-            document.getElementById('calc-expr').textContent = '';
-        }
-
-        function calcClearEntry() {
-            calcDisplay = '0';
-            calcNewNum = true;
-            document.getElementById('calc-result').textContent = '0';
-        }
-
-        function calcBackspace() {
-            if (calcDisplay.length > 1) {
-                calcDisplay = calcDisplay.slice(0, -1);
-            } else {
-                calcDisplay = '0';
-                calcNewNum = true;
-            }
-            document.getElementById('calc-result').textContent = calcDisplay;
-        }
-
-        function calcNegate() {
-            if (calcDisplay !== '0') {
-                calcDisplay = calcDisplay.startsWith('-') ? calcDisplay.slice(1) : '-' + calcDisplay;
-                document.getElementById('calc-result').textContent = calcDisplay;
-            }
-        }
+        function calcClear() { calcDisplay = '0'; calcExpr = ''; calcNewNum = true; document.getElementById('calc-result').textContent = '0'; document.getElementById('calc-expr').textContent = ''; }
+        function calcClearEntry() { calcDisplay = '0'; calcNewNum = true; document.getElementById('calc-result').textContent = '0'; }
+        function calcBackspace() { calcDisplay = calcDisplay.length > 1 ? calcDisplay.slice(0, -1) : '0'; if (calcDisplay === '0') calcNewNum = true; document.getElementById('calc-result').textContent = calcDisplay; }
+        function calcNegate() { if (calcDisplay !== '0') { calcDisplay = calcDisplay.startsWith('-') ? calcDisplay.slice(1) : '-' + calcDisplay; document.getElementById('calc-result').textContent = calcDisplay; } }
 
         // ==================== NOTEPAD ====================
         document.getElementById('notepad-text')?.addEventListener('input', function() {
-            const text = this.value;
-            const lines = text.substr(0, this.selectionStart).split('\n');
+            const lines = this.value.substr(0, this.selectionStart).split('\n');
             document.getElementById('notepad-status').textContent = `Ln ${lines.length}, Col ${lines[lines.length - 1].length + 1}`;
         });
 
@@ -3941,55 +4728,31 @@
         function showSettingsTab(tab, el) {
             document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
-
             ['account', 'personalization', 'language', 'about'].forEach(t => {
                 const section = document.getElementById('settings-' + t);
                 if (section) section.style.display = t === tab ? 'block' : 'none';
             });
-
-            if (tab === 'personalization') {
-                initWallpaperGrid();
-            }
+            if (tab === 'personalization') initWallpaperGrid();
         }
 
         function saveUsername() {
             const newName = document.getElementById('settings-username').value;
-            if (newName) {
-                state.username = newName;
-                saveState();
-                updateUserUI();
-                showNotification(t('save'), 'OK');
-            }
+            if (newName) { state.username = newName; saveState(); updateUserUI(); showNotification(t('save'), 'OK'); }
         }
 
         function changePassword() {
             const current = prompt(state.language === 'ru' ? 'Текущий пароль:' : 'Current password:');
-            if (current !== state.password) {
-                showNotification('Error', t('wrong_password'));
-                return;
-            }
+            if (current !== state.password) { showNotification('Error', t('wrong_password')); return; }
             const newPass = prompt(state.language === 'ru' ? 'Новый пароль:' : 'New password:');
-            if (newPass) {
-                state.password = newPass;
-                saveState();
-                showNotification(t('save'), 'OK');
-            }
+            if (newPass) { state.password = newPass; saveState(); showNotification(t('save'), 'OK'); }
         }
 
         // ==================== NOTIFICATIONS ====================
         function showNotification(title, body) {
-            const existing = document.querySelector('.notification');
-            if (existing) existing.remove();
-
+            document.querySelector('.notification')?.remove();
             const note = document.createElement('div');
             note.className = 'notification';
-            note.innerHTML = `
-                <div class="notification-header">
-                    <h4>${title}</h4>
-                    <span class="notification-close" onclick="this.parentElement.parentElement.remove()">×</span>
-                </div>
-                <div class="notification-body">${body}</div>
-            `;
+            note.innerHTML = `<div class="notification-header"><h4>${title}</h4><span class="notification-close" onclick="this.parentElement.parentElement.remove()">×</span></div><div class="notification-body">${body}</div>`;
             document.body.appendChild(note);
             setTimeout(() => note.remove(), 3500);
         }
@@ -4014,274 +4777,13 @@
 
         // ==================== KEYBOARD SHORTCUTS ====================
         document.addEventListener('keydown', function(e) {
-            // F5 - Refresh desktop
-            if (e.key === 'F5' && document.getElementById('desktop').style.display !== 'none') {
-                e.preventDefault();
-                ctxRefresh();
-            }
-
-            // Delete - Delete selected icons
-            if (e.key === 'Delete') {
-                const sel = getSelectedIndices();
-                if (sel.length > 0) {
-                    ctxDeleteIcon();
-                }
-            }
-
-            // F2 - Rename
-            if (e.key === 'F2') {
-                const sel = getSelectedIndices();
-                if (sel.length === 1) {
-                    contextIconIdx = sel[0];
-                    ctxRenameIcon();
-                }
-            }
-
-            // Ctrl+C - Copy
-            if (e.ctrlKey && e.key === 'c') {
-                const sel = getSelectedIndices();
-                if (sel.length > 0) {
-                    clipboard = sel.map(i => ({ ...desktopIcons[i] }));
-                    clipboardAction = 'copy';
-                    showNotification(t('copy'), sel.length + ' ' + t('items'));
-                }
-            }
-
-            // Ctrl+X - Cut
-            if (e.ctrlKey && e.key === 'x') {
-                const sel = getSelectedIndices();
-                if (sel.length > 0) {
-                    clipboard = sel.map(i => ({ ...desktopIcons[i] }));
-                    clipboardAction = 'cut';
-                    showNotification(t('cut'), sel.length + ' ' + t('items'));
-                }
-            }
-
-            // Ctrl+V - Paste
-            if (e.ctrlKey && e.key === 'v' && clipboard) {
-                ctxPaste();
-            }
-
-            // Escape - Clear selection / Close menus
-            if (e.key === 'Escape') {
-                clearIconSelection();
-                hideAllMenus();
-                closeStartMenu();
-            }
-        });
-
-        // ==================== EXPLORER CONTEXT MENU ====================
-        document.getElementById('explorer-content')?.addEventListener('contextmenu', function(e) {
-            if (e.target.closest('.explorer-item')) return;
-            e.preventDefault();
-            
-            contextClickPos = { x: e.clientX, y: e.clientY };
-            hideAllMenus();
-            
-            const menu = document.getElementById('context-menu');
-            menu.style.display = 'block';
-            menu.style.left = e.clientX + 'px';
-            menu.style.top = e.clientY + 'px';
-        });
-
-        // Create folder/file in explorer
-        function ctxNewFolderInExplorer() {
-            hideAllMenus();
-            showInputDialog(t('new_folder'), t('new_folder'), name => {
-                if (name && fileSystem[expPath]) {
-                    const newPath = expPath + '/' + name.toLowerCase().replace(/\s+/g, '_');
-                    fileSystem[expPath].push({
-                        name: name,
-                        icon: '📁',
-                        type: 'folder',
-                        path: newPath
-                    });
-                    fileSystem[newPath] = [];
-                    renderExplorer();
-                }
-            });
-        }
-
-        function ctxNewFileInExplorer() {
-            hideAllMenus();
-            showInputDialog(t('new_document'), 'Document.txt', name => {
-                if (name && fileSystem[expPath]) {
-                    fileSystem[expPath].push({
-                        name: name,
-                        icon: '📝',
-                        type: 'file',
-                        content: ''
-                    });
-                    renderExplorer();
-                }
-            });
-        }
-
-        // ==================== MATRIX ANIMATION ====================
-        function initMatrix(container) {
-            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
-            for (let i = 0; i < 30; i++) {
-                const column = document.createElement('div');
-                column.className = 'matrix-column';
-                column.style.left = (i * 3.3) + '%';
-                column.style.animationDelay = (Math.random() * 10) + 's';
-                column.style.animationDuration = (8 + Math.random() * 8) + 's';
-                
-                let text = '';
-                for (let j = 0; j < 30; j++) {
-                    text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
-                }
-                column.innerHTML = text;
-                container.appendChild(column);
-            }
-        }
-
-        // ==================== DRAG FILES TO DESKTOP ====================
-        document.getElementById('desktop-area')?.addEventListener('dragover', e => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-        });
-
-        document.getElementById('desktop-area')?.addEventListener('drop', function(e) {
-            e.preventDefault();
-            const files = e.dataTransfer.files;
-            
-            if (files.length === 0) return;
-
-            const x = e.clientX;
-            const y = e.clientY;
-
-            Array.from(files).forEach((file, idx) => {
-                let icon = '📄';
-                let action = null;
-
-                if (file.type.startsWith('image/')) icon = '🖼️';
-                else if (file.type.startsWith('video/')) { icon = '🎬'; action = 'player'; }
-                else if (file.type.startsWith('audio/')) { icon = '🎵'; action = 'player'; }
-                else if (file.name.endsWith('.txt')) icon = '📝';
-                else if (file.name.endsWith('.pdf')) icon = '📕';
-                else if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) icon = '📦';
-
-                // Store file content for media files
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    const newIcon = {
-                        id: 'file-' + Date.now() + '-' + idx,
-                        name: file.name,
-                        icon: icon,
-                        type: 'file',
-                        x: x + (idx * 20),
-                        y: y + (idx * 20),
-                        action: action,
-                        fileData: ev.target.result,
-                        fileType: file.type
-                    };
-                    desktopIcons.push(newIcon);
-                    renderDesktopIcons();
-                };
-
-                if (file.type.startsWith('audio/') || file.type.startsWith('video/')) {
-                    reader.readAsDataURL(file);
-                } else {
-                    const newIcon = {
-                        id: 'file-' + Date.now() + '-' + idx,
-                        name: file.name,
-                        icon: icon,
-                        type: 'file',
-                        x: x + (idx * 20),
-                        y: y + (idx * 20)
-                    };
-                    desktopIcons.push(newIcon);
-                    renderDesktopIcons();
-                }
-            });
-
-            showNotification(t('desktop'), files.length + ' ' + t('items') + ' added');
-        });
-
-        // Open media files from desktop
-        function openIconAction(icon) {
-            if (icon.action === 'player' && icon.fileData) {
-                openWindow('player');
-                setTimeout(() => {
-                    loadMediaFromData(icon.fileData, icon.fileType, icon.name);
-                }, 100);
-            } else if (icon.action) {
-                openWindow(icon.action);
-            } else if (icon.type === 'folder') {
-                openWindow('explorer');
-                setTimeout(() => navigateExplorer(icon.path || 'desktop'), 100);
-            } else if (icon.type === 'file' && icon.name.endsWith('.txt')) {
-                openWindow('notepad');
-                document.getElementById('notepad-text').value = icon.content || '';
-                document.getElementById('notepad-title').textContent = '📝 ' + icon.name;
-            }
-        }
-
-        function loadMediaFromData(data, type, name) {
-            const display = document.getElementById('player-display');
-            const isVideo = type.startsWith('video/');
-
-            if (mediaElement) {
-                mediaElement.pause();
-                mediaElement.remove();
-            }
-
-            mediaElement = document.createElement(isVideo ? 'video' : 'audio');
-            mediaElement.src = data;
-            mediaElement.style.maxWidth = '100%';
-            mediaElement.style.maxHeight = '100%';
-
-            display.innerHTML = '';
-            display.appendChild(mediaElement);
-
-            if (!isVideo) {
-                const info = document.createElement('div');
-                info.style.cssText = 'position: absolute; text-align: center; color: #fff;';
-                info.innerHTML = `<div style="font-size: 70px; margin-bottom: 15px;">🎵</div><div style="font-size: 16px;">${name}</div>`;
-                display.appendChild(info);
-            }
-
-            document.getElementById('player-title').textContent = name;
-
-            mediaElement.onloadedmetadata = () => {
-                document.getElementById('player-duration').textContent = formatTime(mediaElement.duration);
-            };
-
-            mediaElement.ontimeupdate = () => {
-                const progress = (mediaElement.currentTime / mediaElement.duration) * 100;
-                document.getElementById('player-progress').style.width = progress + '%';
-                document.getElementById('player-current').textContent = formatTime(mediaElement.currentTime);
-            };
-
-            mediaElement.onended = () => {
-                isPlaying = false;
-                document.getElementById('play-btn').textContent = '▶';
-            };
-
-            togglePlay();
-        }
-
-        // ==================== TOUCH SUPPORT (BASIC) ====================
-        let touchStartTime = 0;
-
-        document.addEventListener('touchstart', function(e) {
-            touchStartTime = Date.now();
-        });
-
-        document.addEventListener('touchend', function(e) {
-            const touchDuration = Date.now() - touchStartTime;
-            
-            // Long press = right click
-            if (touchDuration > 500) {
-                const touch = e.changedTouches[0];
-                const event = new MouseEvent('contextmenu', {
-                    bubbles: true,
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                e.target.dispatchEvent(event);
-            }
+            if (e.key === 'F5' && document.getElementById('desktop').style.display !== 'none') { e.preventDefault(); ctxRefresh(); }
+            if (e.key === 'Delete' && getSelectedIndices().length > 0) ctxDeleteIcon();
+            if (e.key === 'F2' && getSelectedIndices().length === 1) { contextIconIdx = getSelectedIndices()[0]; ctxRenameIcon(); }
+            if (e.ctrlKey && e.key === 'c' && getSelectedIndices().length > 0) { clipboard = getSelectedIndices().map(i => ({ ...desktopIcons[i] })); clipboardAction = 'copy'; }
+            if (e.ctrlKey && e.key === 'x' && getSelectedIndices().length > 0) { clipboard = getSelectedIndices().map(i => ({ ...desktopIcons[i] })); clipboardAction = 'cut'; }
+            if (e.ctrlKey && e.key === 'v' && clipboard) ctxPaste();
+            if (e.key === 'Escape') { clearIconSelection(); hideAllMenus(); closeStartMenu(); document.getElementById('calendar-popup').classList.remove('show'); }
         });
 
         // ==================== AUTO SAVE ====================
@@ -4293,13 +4795,9 @@
             }
         }, 30000);
 
-        // Load file system
         function loadFileSystem() {
             const saved = localStorage.getItem('fileSystem');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                fileSystem = { ...fileSystem, ...parsed };
-            }
+            if (saved) fileSystem = { ...fileSystem, ...JSON.parse(saved) };
         }
 
         // ==================== STARTUP ====================
@@ -4309,5 +4807,4 @@
         };
     </script>
 </body>
-
 </html>
